@@ -36,3 +36,11 @@ C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Microsoft
 C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Npgsql.dll
 C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\BRUNNO\Documents\Estudos\C-Sharp\PrimeiraAPI\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
