@@ -1,19 +1,45 @@
-using PrimeiraAPI.Infraestrutura;
-using PrimeiraAPI.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using PrimeiraAPI.Domain.Model;
+using PrimeiraAPI.Infraestrutura.Repositories;
+using PrimeiraAPI.Application.Mapping;
+using Microsoft.AspNetCore.Mvc;
+using PrimeiraAPI.Application.Swagger;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using PrimeiraApi.Application.Swagger;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(typeof(DomainToDTOMapping));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddApiVersioning(o =>
+{
+    o.AssumeDefaultVersionWhenUnspecified = true;
+    o.DefaultApiVersion = new ApiVersion(1, 0);
+});
+
+builder.Services.AddVersionedApiExplorer(setup =>
+{
+    setup.GroupNameFormat = "'v'VVV";
+    setup.SubstituteApiVersionInUrl = true;
+
+});
+
 builder.Services.AddSwaggerGen(c => 
 {
+    c.OperationFilter<SwaggerDefaultValues>();
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -43,6 +69,17 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>();
+
+builder.Services.AddCors(options => {
+    options.AddPolicy(name: "MyPolicy",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:8080")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+});
 
 var key = Encoding.ASCII.GetBytes(PrimeiraAPI.Key.Secret);
 
@@ -65,13 +102,29 @@ builder.Services.AddAuthentication(x =>
 
 
 var app = builder.Build();
+var versionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseExceptionHandler("/error-development");
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        foreach (var description in versionDescriptionProvider.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                $"Web APi - {description.GroupName.ToUpper()}");
+        }
+    });
 }
+else
+{
+    app.UseExceptionHandler("/error");
+}
+
+app.UseCors("MyPolicy");
 
 app.UseHttpsRedirection();
 

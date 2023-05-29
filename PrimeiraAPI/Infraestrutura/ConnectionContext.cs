@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PrimeiraAPI.Model;
+using PrimeiraAPI.Domain.Model;
+using System.Data.SqlClient;
 
 namespace PrimeiraAPI.Infraestrutura
 {
@@ -8,12 +9,17 @@ namespace PrimeiraAPI.Infraestrutura
         public DbSet<Employee> Employees { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql(
-                "Server=localhost;" +
-                "Port=5432;Database=postgres;" +
-                "User Id=postgres;" +
-                "Password=12341234;"
-                );
-       
+        {
+            var connectionStringBuilder = new SqlConnectionStringBuilder
+            {
+                DataSource = "localhost,1433",
+                InitialCatalog = "master",
+                UserID = "sa",
+                Password = "#Nanica21",
+                TrustServerCertificate = true // Ignorar a validação do certificado
+            };
+
+            optionsBuilder.UseSqlServer(connectionStringBuilder.ToString());
+        }
     }
 }
